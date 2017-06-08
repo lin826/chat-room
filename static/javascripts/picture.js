@@ -27,10 +27,8 @@ $(document).ready(function() {
             }
         };
     var cropperHeader  = new Croppic('imgID', cropperOptions);
-
 });
 
    function CroppicEvent() {
         $("#CroppicModal").modal();
     }
-

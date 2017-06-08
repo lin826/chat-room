@@ -26,6 +26,8 @@ login_manager.login_message_category = "info"
 socketio = SocketIO(app)
 async_mode = "eventlet"
 
+color_list = ['#3399ff','#cc66ff','#ff6699','#ffcc66','#ccff66','#66ff99']
+tags_list = []
 
 class User(UserMixin):
     pass
@@ -46,6 +48,21 @@ def query_user(username):
         return True
     return False
 
+def getColor( tag ):
+    for i in range(len(tags_list)):
+        if( tag == tags_list[i] ):
+            return color_list[ i % len(color_list) ]
+    return ''
+
+def check_tag( tag ):
+    if( tag not in tags_list ):
+        tags_list.append(tag)
+
+def set_lst_tag( lst_tag ):
+    tags_list = lst_tag
+
+def get_lst_tag():
+    return tags_list
 
 @login_manager.user_loader
 def user_loader(username):
@@ -54,7 +71,6 @@ def user_loader(username):
         user.id = username
         return user
     return None
-
 
 @app.route('/')
 @app.route('/index', methods=['GET'])
@@ -70,17 +86,30 @@ def index():
         UserAccounts.UserName == Message.UserName
     ).all()
 
-    mug_shot_title = UserAccounts.query.filter_by(UserName=user_id).first().MugShot
+    u = UserAccounts.query.filter_by(UserName=user_id).first()
+    mug_shot_title = u.MugShot
     messages_dic = {}
+    tags_list = []
+    is_unread = 0
     messages_list = []
+
     for message in message_data:
         messages_dic['data'] = []
         messages_dic['UserName'] = message.Message.UserName
         messages_dic['Messages'] = message.Message.Messages
         messages_dic['MugShot'] = message.MugShot
         messages_dic['CreateDate'] = message.Message.CreateDate.strftime('%H:%M')
+        messages_dic['Tag'] = message.Message.Tag
+        check_tag(messages_dic['Tag'])
+        messages_dic['Color'] = getColor(messages_dic['Tag'])
         messages_list.append(messages_dic)
+        if( is_unread == 0 and message.Message.CreateDate < u.ModifiedDate):
+            messages_list.append({})
+            is_unread = 1
         messages_dic = {}
+
+    tags_list = get_lst_tag()
+    len_tags_show = min(len(tags_list),3)
     return render_template("index.html", **locals())
 
 
@@ -136,7 +165,6 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-
 @socketio.on('join')
 def join(message):
     join_room(message['room'])
@@ -158,18 +186,32 @@ def send_inquiry(msg):
     data_message = Message(
         user_name=user_id,
         messages=msg['msg'],
-        create_date=create_date
+        create_date=create_date,
+        tag = msg['tag']
     )
+
     db.session.add(data_message)
     db.session.commit()
     mug_shot = UserAccounts.query.filter_by(UserName=user_id).first().MugShot
+
+    check_tag(msg['tag'])
     data = {
         'time': create_date.strftime('%H:%M'),
         'Name': user_id,
         'PictureUrl': mug_shot,
         'msg': msg['msg'],
+        'Tag': msg['tag'],
+        'Color': getColor(msg['tag'])
     }
     emit('getInquiry', data, room=msg['room'])
+
+@socketio.on('sendRead')
+def send_read():
+    user_id = session.get('user_id')
+    create_date = datetime.now()
+    UserAccounts.query.filter_by(UserName=user_id).first().ModifiedDate = create_date
+    print(UserAccounts.query.filter_by(UserName=user_id).first().ModifiedDate)
+    db.session.commit()
 
 
 @app.route('/croppic', methods=['GET', 'POST'])
@@ -262,4 +304,4 @@ def croppic():
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app,host='0.0.0.0', port='8080')

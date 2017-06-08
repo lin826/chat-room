@@ -14,7 +14,6 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-
 class UserAccounts(db.Model):
     __tablename__ = 'UserAccounts'
 
@@ -46,7 +45,6 @@ class UserAccounts(db.Model):
             m = hashlib.md5(str_psw.encode(encoding='utf-8'))
             return m.hexdigest()
 
-
 class Message(db.Model):
     __tablename__ = 'Message'
 
@@ -54,14 +52,17 @@ class Message(db.Model):
     UserName = db.Column(db.String(64))
     Messages = db.Column(db.Text)
     CreateDate = db.Column(db.DateTime)
+    Tag = db.Column(db.String(25))
 
     def __init__(self,
                  user_name,
                  messages,
-                 create_date):
+                 create_date,
+                 tag):
         self.UserName = user_name
         self.Messages = messages
         self.CreateDate = create_date
+        self.Tag = tag
 
 
 if __name__ == '__main__':
