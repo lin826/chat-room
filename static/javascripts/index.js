@@ -82,6 +82,10 @@ $(function () {
         updateScrollbar();
     });
 
+    $('.chat-unread').click(function () {
+        $messages.mCustomScrollbar("update").mCustomScrollbar('scrollTo', '.unread-line');
+    });
+
     $('.add-tag').click(function () {
         var tag_content = window.prompt(" Please enter your tag ", "");
         if ( tag_content ) {
