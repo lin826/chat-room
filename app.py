@@ -94,6 +94,9 @@ def index():
     messages_list = []
 
     for message in message_data:
+        if( is_unread == 0 and message.Message.CreateDate > u.ModifiedDate):
+            messages_list.append({})
+            is_unread = 1
         messages_dic['data'] = []
         messages_dic['UserName'] = message.Message.UserName
         messages_dic['Messages'] = message.Message.Messages
@@ -103,9 +106,6 @@ def index():
         check_tag(messages_dic['Tag'])
         messages_dic['Color'] = getColor(messages_dic['Tag'])
         messages_list.append(messages_dic)
-        if( is_unread == 0 and message.Message.CreateDate < u.ModifiedDate):
-            messages_list.append({})
-            is_unread = 1
         messages_dic = {}
 
     tags_list = get_lst_tag()
@@ -210,7 +210,6 @@ def send_read():
     user_id = session.get('user_id')
     create_date = datetime.now()
     UserAccounts.query.filter_by(UserName=user_id).first().ModifiedDate = create_date
-    print(UserAccounts.query.filter_by(UserName=user_id).first().ModifiedDate)
     db.session.commit()
 
 
@@ -304,4 +303,4 @@ def croppic():
 
 
 if __name__ == '__main__':
-    socketio.run(app,host='0.0.0.0', port='8080')
+    socketio.run(app,host='0.0.0.0', port=8080)

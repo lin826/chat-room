@@ -32,18 +32,24 @@
 	  <div class="messages">
 	    <div class="messages-content">
         {% for data in messages_list %}
-          <div class="message new" style = " border-left: 6px solid {{ data.Color }} ; " >
-            <div class="timestamp">
-              {{ data.UserName }} at {{ data.CreateDate }}
+          {% if data.UserName %}
+            <div class="message new" style = " border-left: 6px solid {{ data.Color }} ; " >
+                <div class="timestamp">
+                {{ data.UserName }} at {{ data.CreateDate }}
+                </div>
+                <figure class="avatar">
+                <img src="static/mugshot/{{ data.MugShot }}" alt="{{ data.UserName }}" title="{{ data.UserName }}">
+                </figure>
+                {{ data.Messages }}
+                {% if data.Tag %}
+                <div class="tagcat" value= "{{ data.Tag }}" >#{{ data.Tag }}</div>
+                {% endif %}
             </div>
-            <figure class="avatar">
-              <img src="static/mugshot/{{ data.MugShot }}" alt="{{ data.UserName }}" title="{{ data.UserName }}">
-            </figure>
-            {{ data.Messages }}
-            {% if data.Tag %}
-              <div class="tagcat" value= "{{ data.Tag }}" >#{{ data.Tag }}</div>
-            {% endif %}
-          </div>
+          {% else %}
+            <div>
+              ------- Unread Messages Start Here --------
+            </div>
+          {% endif %}
         {% endfor %}
       </div>
 	  </div>
