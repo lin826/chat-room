@@ -26,7 +26,7 @@ pip install -r requirements.txt
 聊天室
 Totm IM interface with (a) topic visualization (b) custom tag (c) table of tags.
 
-![alt tag](http://imgur.com/a/rKUtX)
+![alt tag](http://imgur.com/CAeAfYi)
 
 點選照片下方的齒輪，可以上傳自己的照片
 ![alt tag](http://i.imgur.com/316KdGN.jpg)
