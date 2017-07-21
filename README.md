@@ -1,4 +1,4 @@
-# chat-room
+# Totm: Visualization on Topics over Text Messages
 
 Chat-Room Use Python Socket.IO SQLite
 
