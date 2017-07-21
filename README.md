@@ -1,6 +1,6 @@
 # chat-room
 
-Chat-Room Use Python Socket.IO
+Chat-Room Use Python Socket.IO SQLite
 
 ## 特色
 
@@ -29,12 +29,6 @@ pip install -r requirements.txt
 
 點選照片下方的齒輪，可以上傳自己的照片
 ![alt tag](http://i.imgur.com/316KdGN.jpg)
-
-## db - SQLite
-
-![alt tag](http://i.imgur.com/LEuKo7o.jpg)
-![alt tag](http://i.imgur.com/isOb07Z.jpg)
-![alt tag](http://i.imgur.com/fQyhQpn.jpg)
 
 ## 執行環境
 
