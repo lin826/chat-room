@@ -23,12 +23,16 @@ pip install -r requirements.txt
 ![alt tag](http://i.imgur.com/XiNxpEQ.jpg)
 ![alt tag](http://i.imgur.com/4FoQskT.jpg)
 
-聊天室
+### 聊天室
 Totm IM interface with (a) topic visualization (b) custom tag (c) table of tags.
 
 ![alt tag](http://i.imgur.com/CAeAfYi.png)
 
-點選照片下方的齒輪，可以上傳自己的照片
+點擊左方列表，可以單獨列出該 tag 下的訊息。例如：#Qualitative Research
+
+![alt tag](http://i.imgur.com/vz4rXJX.png)
+
+點選個人照片下方的齒輪，可以上傳自己的照片
 ![alt tag](http://i.imgur.com/316KdGN.jpg)
 
 ## 執行環境
